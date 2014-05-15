@@ -68,7 +68,7 @@ local COMMAND = {}
 
 				time:AddOption("Specify", function()
 					Derma_StringRequest("Specify Reason", "Specify a reason in the box below.", "", function(text)
-						self:Send(timeDefintions[i][2], text)
+						self:Send(timeDefinitions[i][2], text)
 
 						table.insert(history, text)
 						cookie.Set("mod_BanReasons", util.TableToJSON(history))
