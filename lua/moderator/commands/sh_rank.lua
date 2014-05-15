@@ -39,7 +39,7 @@ moderator.commands.setrank = COMMAND
 
 if (SERVER) then
 	concommand.Add("mod_setrank", function(client, command, arguments)
-		if (!IsValid(client) or client:CheckRank("owner")) then
+		if (!IsValid(client) or client:IsUserGroup("owner")) then
 			if (!arguments[1]) then
 				return MsgN("You did not enter a valid name.")
 			end
