@@ -294,6 +294,11 @@ if (SERVER) then
 	end)
 
 	concommand.Add("mod", function(client, command, arguments)
+		if (!IsValid(client)) then
+			print("This command can only be run by a player")
+			return
+		end
+
 		if (arguments[1] == "menu") then
 			return client:ConCommand("mod_menu")
 		end
