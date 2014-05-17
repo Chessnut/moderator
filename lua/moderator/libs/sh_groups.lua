@@ -240,8 +240,13 @@ function moderator.GetGroup(client)
 	return group
 end
 
-function moderator.GetGroupTable(group, default)
-	return moderator.groups[group] or (default or moderator.groups.user)
+function moderator.GetGroupTable(group, default, noDefault)
+	local group = moderator.groups[group]
+	if (group) then return group end
+
+	if (!noDefault) then
+		return default or moderator.groups.user
+	end
 end
 
 function moderator.HasPermission(command, client, group)
@@ -296,10 +301,10 @@ function moderator.CheckGroup(client, group)
 		return true
 	end
 
-	local ourGroupTable = moderator.GetGroupTable(moderator.GetGroup(client))
+	local ourGroupTable = moderator.GetGroupTable(moderator.GetGroup(client), nil, true)
 	if (!ourGroupTable) then return false end
 
-	local groupTable = moderator.GetGroupTable(group)
+	local groupTable = moderator.GetGroupTable(group, nil, true)
 	if (!groupTable) then return false end
 
 	return (ourGroupTable.immunity or 0) >= (groupTable.immunity or 0)
