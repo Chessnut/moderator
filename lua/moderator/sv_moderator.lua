@@ -13,7 +13,7 @@ function moderator.NotifyAction(client, target, action)
 	local hasNoTarget = target == nil
 
 	net.Start("mod_NotifyAction")
-		net.WriteUInt(client:EntIndex(), 4)
+		net.WriteUInt(IsValid(client) and client:EntIndex() or 0, 4)
 
 		if (type(target) != "table") then
 			target = {target}
@@ -29,6 +29,10 @@ function moderator.Notify(receiver, message)
 	net.Start("mod_Notify")
 		net.WriteString(message)
 	if (receiver) then
+		if (type(receiver) == "Entity" and !IsValid(receiver)) then
+			return MsgN("[moderator] "..message:sub(1, 1):upper()..message:sub(2))
+		end
+
 		net.Send(receiver)
 	else
 		net.Broadcast()

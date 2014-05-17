@@ -13,7 +13,7 @@ local COMMAND = {}
 		end
 
 		local oldReason = reason
-		reason = "You have been kicked by "..client:Name().." for "..reason
+		reason = "You have been kicked by "..(IsValid(client) and client:Name() or "Console").." for "..reason
 
 		if (type(target) == "table") then
 			for k, v in pairs(target) do

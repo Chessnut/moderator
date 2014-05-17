@@ -246,7 +246,7 @@ end
 
 function moderator.HasPermission(command, client, group)
 	client = client or (CLIENT and LocalPlayer())
-	if (!IsValid(client)) then return false end
+	if (!IsValid(client)) then return SERVER end
 
 	group = group or moderator.GetGroup(client)
 	local groupTable = moderator.GetGroupTable(group)
@@ -292,12 +292,15 @@ function moderator.HasInfluence(client, target, strict)
 end
 
 function moderator.CheckGroup(client, group)
-	if (client:GetNWString("usergroup", "user") == group) then
+	if (!IsValid(client) or client:GetNWString("usergroup", "user") == group) then
 		return true
 	end
 
 	local ourGroupTable = moderator.GetGroupTable(moderator.GetGroup(client))
+	if (!outGroupTable) then return false end
+
 	local groupTable = moderator.GetGroupTable(group)
+	if (!groupTable) then return false end
 
 	return (ourGroupTable.immunity or 0) >= (groupTable.immunity or 0)
 end

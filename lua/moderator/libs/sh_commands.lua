@@ -266,18 +266,26 @@ if (SERVER) then
 				return moderator.Notify(client, "you are not allowed to do that.")
 			end
 
-			if (client:GetInfoNum("mod_clearoncommand", 1) > 0) then
+			if (IsValid(client) and client:GetInfoNum("mod_clearoncommand", 1) > 0) then
 				client:ConCommand("mod_clearselected")
 			end
 
 			local result, message = commandTable:OnRun(client, arguments, target, alias)
-			client.modLastTarget = target
+			if (IsValid(client)) then client.modLastTarget = target end
 
 			if (result == false) then
 				moderator.Notify(client, message)
 			end
 		else
 			moderator.Notify(client, "you have entered an invalid command.")
+		end
+	end
+
+	function moderator.Print(client, message)
+		if (!IsValid(client)) then
+			MsgN(message)
+		else
+			client:PrintMessage(2, message)
 		end
 	end
 
@@ -294,7 +302,7 @@ if (SERVER) then
 	end)
 
 	concommand.Add("mod", function(client, command, arguments)
-		if (arguments[1] == "menu") then
+		if (IsValid(client) and arguments[1] == "menu") then
 			return client:ConCommand("mod_menu")
 		end
 		
@@ -324,40 +332,40 @@ if (SERVER) then
 						usage = "<player> "..usage
 					end
 
-					client:PrintMessage(2, "\n\n [moderator] Command Help for: "..command)
-					client:PrintMessage(2, " \t• Name: "..(commandTable.name or "No name available."))
-					client:PrintMessage(2, " \t• Description: "..(commandTable.tip or "No description available."))
-					client:PrintMessage(2, " \t• Usage: "..usage)
+					moderator.Print(client, "\n\n [moderator] Command Help for: "..command)
+					moderator.Print(client, " \t• Name: "..(commandTable.name or "No name available."))
+					moderator.Print(client, " \t• Description: "..(commandTable.tip or "No description available."))
+					moderator.Print(client, " \t• Usage: "..usage)
 
 					if (commandTable.example) then
-						client:PrintMessage(2, " \t• Example: "..commandTable.example)
+						moderator.Print(client, " \t• Example: "..commandTable.example)
 					end
 
 					if (commandTable.aliases) then
-						client:PrintMessage(2, " \t• Alias"..(#commandTable.aliases > 0 and "es" or "")..": "..table.concat(commandTable.aliases, ", "))
+						moderator.Print(client, " \t• Alias"..(#commandTable.aliases > 0 and "es" or "")..": "..table.concat(commandTable.aliases, ", "))
 					end
 				else
-					client:PrintMessage(2, " [moderator] That command does not exist.")
+					moderator.Print(client, " [moderator] That command does not exist.")
 				end
 
 				return
 			end
 
-			client:PrintMessage(2, [[
+			moderator.Print(client, [[
        __   __   ___  __       ___  __   __  
  |\/| /  \ |  \ |__  |__)  /\   |  /  \ |__) 
  |  | \__/ |__/ |___ |  \ /--\  |  \__/ |  \ 
  Created by Chessnut - Version ]]..moderator.version..[[                         
 			]])
-			client:PrintMessage(2, " Command Help:")
+			moderator.Print(client, " Command Help:")
 
 			for k, v in SortedPairsByMemberValue(moderator.commands, "name") do
 				if (moderator.HasPermission(k, client)) then
-					client:PrintMessage(2, " "..k.."			"..(v.tip or "No help available."))
+					moderator.Print(client, " "..k.."			"..(v.tip or "No help available."))
 				end
 			end
 
-			client:PrintMessage(2, "\n Type 'mod help <command>' to get help with a specific command.\n\n")
+			moderator.Print(client, "\n Type 'mod help <command>' to get help with a specific command.\n\n")
 		end
 	end)
 else

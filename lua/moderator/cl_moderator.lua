@@ -12,15 +12,16 @@ end
 
 net.Receive("mod_NotifyAction", function(length)
 	local client = player.GetByID(net.ReadUInt(4))
-
-	if (!IsValid(client)) then
-		return
-	end
-
 	local target = net.ReadTable()
 	local action = net.ReadString()
 	local hasNoTarget = net.ReadBit() == 1
-	local output = {client, color_white, " "}
+	local output
+
+	if (IsValid(client)) then
+		output = {client, color_white, " "}
+	else
+		output = {Color(180, 180, 180), "Console", color_white, " "}
+	end
 
 	if (action:find("*", nil, true)) then
 		local exploded = string.Explode("*", action)
