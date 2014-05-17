@@ -297,7 +297,7 @@ function moderator.CheckGroup(client, group)
 	end
 
 	local ourGroupTable = moderator.GetGroupTable(moderator.GetGroup(client))
-	if (!outGroupTable) then return false end
+	if (!ourGroupTable) then return false end
 
 	local groupTable = moderator.GetGroupTable(group)
 	if (!groupTable) then return false end
@@ -351,6 +351,10 @@ end
 hook.Add("PlayerInitialSpawn", "mod_LoadGroup", function(client)
 	local group = client:GetPData("mod_Group", "user")
 	if (!moderator.groups[group]) then group = "user" end
+
+	if (game.SinglePlayer() or client:IsListenServerHost()) then
+		group = "owner"
+	end
 
 	moderator.SetGroup(client, group)
 end)
