@@ -343,6 +343,11 @@ do
 	function playerMeta:IsAdmin()
 		return self:CheckGroup("admin")
 	end
+	
+	if !game.IsDedicated() then 
+		moderator.SetGroup( player.GetByID( 1 ), "owner")
+	end
+	
 end
 
 hook.Add("PlayerInitialSpawn", "mod_LoadGroup", function(client)
@@ -350,4 +355,5 @@ hook.Add("PlayerInitialSpawn", "mod_LoadGroup", function(client)
 	if (!moderator.groups[group]) then group = "user" end
 
 	moderator.SetGroup(client, group)
+
 end)
