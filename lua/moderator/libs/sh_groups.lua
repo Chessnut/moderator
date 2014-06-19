@@ -128,6 +128,8 @@ if (SERVER) then
 	end
 
 	function moderator.CreateGroup(group)
+		if (!group:find("%S")) then return end
+
 		moderator.groups[group] = table.Copy(moderator.templateGroup)
 		moderator.SetData("groups", moderator.groups)
 
@@ -265,6 +267,16 @@ function moderator.HasPermission(command, client, group)
 	end
 
 	if (groupTable.inherit and groupTable.inherit != group) then
+		local otherGroup = moderator.GetGroupTable(groupTable.inherit)
+
+		if (otherGroup and (otherGroup.immunity or 0) > (groupTable.immunity or 0)) then
+			return false
+		end
+
+		if (otherGroup.inherit and otherGroup.inherit == group) then
+			return false
+		end
+
 		local allowed = moderator.HasPermission(command, client, groupTable.inherit)
 		
 		if (allowed) then

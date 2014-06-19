@@ -38,8 +38,12 @@ net.Receive("mod_NotifyAction", function(length)
 	chat.AddText(unpack(output))
 end)
 
+function moderator.Notify(message)
+	chat.AddText(LocalPlayer(), color_white, ", "..message)
+end
+
 net.Receive("mod_Notify", function(length)
-	chat.AddText(LocalPlayer(), color_white, ", "..net.ReadString())
+	moderator.Notify(net.ReadString())
 end)
 
 do

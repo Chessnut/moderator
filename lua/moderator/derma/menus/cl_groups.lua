@@ -24,6 +24,7 @@ local CATEGORY = {}
 
 		local parent = content:Add("DListView")
 			local line = {}
+			local excluded = {}
 			local delta
 
 			parent:Dock(TOP)
@@ -34,7 +35,16 @@ local CATEGORY = {}
 			parent:AddColumn("Is Parent")
 			parent.Think = function(this)
 				for k, v in pairs(moderator.groups) do
-					if (!IsValid(line[k]) and moderator.lastGroup != k) then
+					if (!IsValid(line[k]) and moderator.lastGroup != k and !excluded[k]) then
+						local groupTable = moderator.GetGroupTable(moderator.lastGroup)
+						local otherGroupTable = moderator.GetGroupTable(k)
+
+						if ((otherGroupTable.immunity or 0) > (groupTable.immunity or 0)) then
+							excluded[k] = true
+							
+							return
+						end
+
 						line[k] = this:AddLine(v.name, "")
 						line[k].group = k
 
@@ -57,8 +67,13 @@ local CATEGORY = {}
 				if (!moderator.lastGroup) then return end
 
 				local groupTable = moderator.GetGroupTable(moderator.lastGroup)
-
+				local otherGroupTable = moderator.GetGroupTable(line.group)
+				
 				if (selected and line.group != groupTable.inherit) then
+					if ((otherGroupTable.immunity or 0) > (groupTable.immunity or 0)) then
+						return
+					end
+
 					moderator.UpdateGroup(moderator.lastGroup, "inherit", line.group)
 
 					timer.Simple(0.1, function()
@@ -126,7 +141,7 @@ local CATEGORY = {}
 
 			if (!data or value == "New...") then
 				Derma_StringRequest("New Group", "Enter a group identifier for this new group.", "", function(text)
-					if (#text < 1) then
+					if (#text < 1 or !text:find("%S")) then
 						return moderator.Notify("You did not provide a valid group identifier.")
 					end
 
