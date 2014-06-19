@@ -114,7 +114,7 @@ if (SERVER) then
 
 			if (result) then
 				return result(client)
-			else
+			elseif (targeter) then
 				local players = {}
 
 				for k, v in pairs(player.GetAll()) do
@@ -275,9 +275,13 @@ if (SERVER) then
 
 			if (result == false) then
 				moderator.Notify(client, message)
+
+				return result, message
 			end
 		else
 			moderator.Notify(client, "you have entered an invalid command.")
+
+			return "you have entered an invalid command"
 		end
 	end
 
