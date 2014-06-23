@@ -353,15 +353,24 @@ end
 
 do
 	local playerMeta = FindMetaTable("Player")
-	playerMeta.CheckGroup = moderator.CheckGroup
-	playerMeta.IsUserGroup = moderator.CheckGroup
-
+	function playerMeta:CheckGroup(group)
+		return moderator.CheckGroup(self, group)
+	end
+	
+	function playerMeta:IsUserGroup(group)
+		return moderator.CheckGroup(self, group)
+	end
+		
+	function playerMeta:GetUserGroup()
+		return moderator.GetGroup(self)
+	end
+		
 	function playerMeta:IsSuperAdmin()
-		return self:CheckGroup("superadmin")
+		return moderator.CheckGroup(self, "superadmin")
 	end
 
 	function playerMeta:IsAdmin()
-		return self:CheckGroup("admin")
+		return moderator.CheckGroup(self, "admin")
 	end
 end
 
