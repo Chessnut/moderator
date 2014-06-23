@@ -13,7 +13,7 @@ function moderator.NotifyAction(client, target, action)
 	local hasNoTarget = target == nil
 
 	net.Start("mod_NotifyAction")
-		net.WriteUInt(IsValid(client) and client:EntIndex() or 0, 4)
+		net.WriteUInt(IsValid(client) and client:EntIndex() or 0, 7)
 
 		if (type(target) != "table") then
 			target = {target}
