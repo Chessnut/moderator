@@ -308,7 +308,8 @@ function moderator.HasInfluence(client, target, strict)
 	return false
 end
 
-function moderator.CheckGroup(client, group)
+-- immunity is a quick check if your rank is higher than theirs, emulating default gmod IsAdmin/IsSuperAdmin behaviour.
+function moderator.CheckGroup(client, group, immunity)
 	if (!IsValid(client) or client:GetNWString("usergroup", "user") == group) then
 		return true
 	end
@@ -319,7 +320,7 @@ function moderator.CheckGroup(client, group)
 	local groupTable = moderator.GetGroupTable(group, nil, true)
 	if (!groupTable) then return false end
 
-	return (ourGroupTable.immunity or 0) >= (groupTable.immunity or 0)
+	return immunity and ((ourGroupTable.immunity or 0) >= (groupTable.immunity or 0)) or ((ourGroupTable.immunity or 0) == (groupTable.immunity or 0))
 end
 
 function moderator.SetGroup(client, group)
@@ -353,15 +354,25 @@ end
 
 do
 	local playerMeta = FindMetaTable("Player")
-	playerMeta.CheckGroup = moderator.CheckGroup
-	playerMeta.IsUserGroup = moderator.CheckGroup
 
+	function playerMeta:CheckGroup(group)
+		return moderator.CheckGroup(self, group)
+	end
+	
+	function playerMeta:IsUserGroup(group)
+		return moderator.CheckGroup(self, group)
+	end
+		
+	function playerMeta:GetUserGroup()
+		return moderator.GetGroup(self)
+	end
+		
 	function playerMeta:IsSuperAdmin()
-		return self:CheckGroup("superadmin")
+		return moderator.CheckGroup(self, "superadmin", true)
 	end
 
 	function playerMeta:IsAdmin()
-		return self:CheckGroup("admin")
+		return moderator.CheckGroup(self, "admin", true)
 	end
 end
 
