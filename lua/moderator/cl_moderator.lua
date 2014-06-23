@@ -11,7 +11,7 @@ if (IsValid(moderator.menu)) then
 end
 
 net.Receive("mod_NotifyAction", function(length)
-	local client = player.GetByID(net.ReadUInt(4))
+	local client = player.GetByID(net.ReadUInt(7))
 	local target = net.ReadTable()
 	local action = net.ReadString()
 	local hasNoTarget = net.ReadBit() == 1
