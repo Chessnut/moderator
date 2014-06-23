@@ -354,7 +354,7 @@ end
 do
 	local playerMeta = FindMetaTable("Player")
 	playerMeta.CheckGroup = moderator.CheckGroup
-	playerMeta.IsUserGroup = moderator.CheckGroup
+	playerMeta.GetUserGroup = moderator.GetGroup
 
 	function playerMeta:IsSuperAdmin()
 		return self:CheckGroup("superadmin")
