@@ -46,6 +46,8 @@ local PANEL = {}
 	function PANEL:Init()
 		local w, h = math.max(ScrW() * 0.45, 640), math.max(ScrH() * 0.5, 600)
 		
+		moderator.menu = self
+		
 		self:SetTitle("")
 		self:SetPos(-w, (ScrH() * 0.5) - (h * 0.5))
 		self:SetSize(w, h)
@@ -390,6 +392,6 @@ concommand.Add("mod_menu", function()
 
 		moderator.menu:Close()
 	else
-		moderator.menu = vgui.Create("mod_Menu")
+		vgui.Create("mod_Menu")
 	end
 end)
