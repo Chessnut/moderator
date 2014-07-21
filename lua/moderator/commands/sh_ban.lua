@@ -14,6 +14,11 @@ local COMMAND = {}
 			moderator.BanPlayer(target, reason, time, client)
 		end
 
+		time = moderator.GetTimeByString(time)
+		local timeString = time > 0 and "for "..string.NiceTime(time) or "permanently"
+
+		moderator.NotifyAction(client, target, "has banned * "..timeString.." with the reason: "..reason)
+		
 		if (type(target) == "table") then
 			for k, v in pairs(target) do
 				Action(v)
@@ -21,11 +26,6 @@ local COMMAND = {}
 		else
 			Action(target)
 		end
-
-		time = moderator.GetTimeByString(time)
-		local timeString = time > 0 and "for "..string.NiceTime(time) or "permanently"
-
-		moderator.NotifyAction(client, target, "has banned * "..timeString.." with the reason: "..reason)
 	end
 
 	if (CLIENT) then
