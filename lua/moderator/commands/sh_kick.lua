@@ -15,6 +15,8 @@ local COMMAND = {}
 		local oldReason = reason
 		reason = "You have been kicked by "..(IsValid(client) and client:Name() or "Console").." for "..reason
 
+		moderator.NotifyAction(client, target, "has kicked * for "..oldReason)
+		
 		if (type(target) == "table") then
 			for k, v in pairs(target) do
 				v:Kick(reason)
@@ -22,8 +24,6 @@ local COMMAND = {}
 		else
 			target:Kick(reason)
 		end
-
-		moderator.NotifyAction(client, target, "has kicked * for "..oldReason)
 	end
 
 	if (CLIENT) then
