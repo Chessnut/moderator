@@ -4,11 +4,15 @@ local COMMAND = {}
 	COMMAND.icon = "delete"
 	COMMAND.limitFind = 1
 	COMMAND.usage = "<time length> [string reason]"
-	COMMAND.example = "!ban Troll 1w \"being a troll, banned for a week\" - Bans a troll for one week."
+	COMMAND.example = "!ban Troll 1w trolling - Bans a troll for one week."
 
 	function COMMAND:OnRun(client, arguments, target)
 		local time = moderator.GetTimeByString(arguments[1] or 60)
-		local reason = arguments[2] or "no reason"
+		local reason = "no reason"
+        
+		if (arguments[2]) then
+			reason = table.concat(arguments, " ", 2)
+		end
 
 		local function Action(target)
 			moderator.BanPlayer(target, reason, time, client)
