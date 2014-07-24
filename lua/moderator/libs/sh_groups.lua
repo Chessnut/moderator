@@ -75,6 +75,7 @@ moderator.templateGroup = {
 
 if (SERVER) then
 	moderator.groups = table.Merge(moderator.groups, moderator.GetData("groups", {}))
+	moderator.users = moderator.users or moderator.GetData("users", {})
 
 	util.AddNetworkString("mod_Groups")
 	util.AddNetworkString("mod_GroupUpdate")
@@ -329,7 +330,9 @@ function moderator.SetGroup(client, group)
 	if (!moderator.groups[group]) then group = "user" end
 
 	client:SetNWString("usergroup", group)
-	client:SetPData("mod_Group", group)
+
+	moderator.users[client:SteamID()] = group
+	moderator.SetData("users", moderator.users)
 end
 
 function moderator.GetGroupIcon(client)
@@ -366,12 +369,16 @@ do
 end
 
 hook.Add("PlayerInitialSpawn", "mod_LoadGroup", function(client)
-	local group = client:GetPData("mod_Group", "user")
-	if (!moderator.groups[group]) then group = "user" end
+	timer.Simple(2, function()
+		if (IsValid(client)) then
+			local group = moderator.users[client:SteamID()] or client:GetPData("mod_Group", "user")
+			if (!moderator.groups[group]) then group = "user" end
 
-	if (game.SinglePlayer() or client:IsListenServerHost()) then
-		group = "owner"
-	end
+			if (game.SinglePlayer() or client:IsListenServerHost()) then
+				group = "owner"
+			end
 
-	moderator.SetGroup(client, group)
+			moderator.SetGroup(client, group)
+		end
+	end)
 end)
