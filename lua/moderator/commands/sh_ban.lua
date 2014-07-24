@@ -3,29 +3,26 @@ local COMMAND = {}
 	COMMAND.tip = "Bans a person from the server."
 	COMMAND.icon = "delete"
 	COMMAND.limitFind = 1
+	COMMAND.noTarget = true
+	COMMAND.noArrays = true
 	COMMAND.usage = "<time length> [string reason]"
 	COMMAND.example = "!ban Troll 1w \"being a troll, banned for a week\" - Bans a troll for one week."
 
 	function COMMAND:OnRun(client, arguments, target)
-		local time = moderator.GetTimeByString(arguments[1] or 60)
-		local reason = arguments[2] or "no reason"
+		local target = moderator.FindPlayerByName(arguments[1], false, 1)
 
-		local function Action(target)
-			moderator.BanPlayer(target, reason, time, client)
+		if (!target and !arguments[1]:match("STEAM_[0-5]:[0-9]:[0-9]+") and arguments[1]:lower() != "bot") then
+			return false, "you need to provide a valid player or steamID."
 		end
 
-		if (type(target) == "table") then
-			for k, v in pairs(target) do
-				Action(v)
-			end
-		else
-			Action(target)
-		end
+		local time = moderator.GetTimeByString(arguments[2] or 60)
+		local reason = arguments[3] and table.concat(arguments, " ", 3) or "no reason"
 
 		time = moderator.GetTimeByString(time)
 		local timeString = time > 0 and "for "..string.NiceTime(time) or "permanently"
 
-		moderator.NotifyAction(client, target, "has banned * "..timeString.." with the reason: "..reason)
+		moderator.NotifyAction(client, target or arguments[1]:upper(), "has banned * "..timeString.." with the reason: "..reason)
+		moderator.BanPlayer(target or arguments[1]:upper(), reason, time, client)
 	end
 
 	if (CLIENT) then
@@ -99,10 +96,11 @@ local COMMAND = {}
 	function COMMAND:OnRun(client, arguments)
 		local steamID = arguments[1]
 
-		if (!steamID or !steamID:match("STEAM_[0-5]:[0-9]:[0-9]+")) then
+		if (!steamID or (!steamID:match("STEAM_[0-5]:[0-9]:[0-9]+") and steamID:lower() != "bot")) then
 			return false, "you need to provide a valid SteamID."
 		end
 
 		moderator.RemoveBan(steamID)
+		moderator.NotifyAction(client, steamID, "has unbanned * from the server")
 	end
 moderator.commands.unban = COMMAND

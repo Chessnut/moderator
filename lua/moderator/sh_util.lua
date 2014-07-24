@@ -92,7 +92,10 @@ function moderator.TableToList(info, word, hasNoTarget)
 			if (v == LocalPlayer()) then
 				output[#output + 1]	= team.GetColor(v:Team())
 				output[#output + 1] = "you"
+			elseif (type(v) == "Player") then
+				output[#output + 1] = v
 			else
+				output[#output + 1] = Color(200, 200, 200)
 				output[#output + 1] = v
 			end
 
