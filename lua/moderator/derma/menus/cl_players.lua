@@ -18,7 +18,7 @@ local CATEGORY = {}
 				local players = {}
 
 				for k, v in ipairs(player.GetAll()) do
-					if (moderator.StringMatches(v:Name(), text)) then
+					if (moderator.StringMatches(v:Name(), text) or v:SteamID():match(text)) then
 						players[k] = v
 					end
 				end
@@ -26,7 +26,7 @@ local CATEGORY = {}
 				self:ListPlayers(panel.scroll, players)
 			end
 		end
-		panel.search:SetToolTip("Search for players by their name.")
+		panel.search:SetToolTip("Search for players by their name/SteamID.")
 
 		panel.contents = panel:Add("DPanel")
 		panel.contents:DockMargin(4, 4, 4, 4)
@@ -307,7 +307,7 @@ local CATEGORY = {}
 					end):SetImage("icon16/database_lightning.png")
 				menu:Open()
 			end
-			self.avatar.click:SetToolTip("Click to view this player's Steam profile.")
+			self.avatar.click:SetToolTip("Click to view this "..(client.SteamName and client:SteamName() or client:Name()).."'s Steam profile.")
 			
 			self.name:SetText(client:Name())
 			self.name:SizeToContents()
