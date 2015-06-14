@@ -29,9 +29,12 @@ net.Receive("mod_NotifyAction", function(length)
 		output[#output + 1] = exploded[1]
 		table.Add(output, moderator.TableToList(target))
 		output[#output + 1] = exploded[2]
-	else
+	elseif !hasNoTarget then
 		output[#output + 1] = action.." "
 		table.Add(output, moderator.TableToList(target, nil, hasNoTarget))
+	else
+		output[#output + 1] = action
+		table.Add(output, moderator.TableToList(target, nil, hasNoTarget))		
 	end
 
 	output[#output + 1] = "."
