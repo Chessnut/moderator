@@ -7,7 +7,7 @@ local COMMAND = {}
 	COMMAND.example = "!map map - Set the current map."
 
 	function COMMAND:OnRun(client, arguments)
-		local map = tostring(arguments[1])
+		local map = arguments[1]
 		local currentmap = game.GetMap()
 		
 		if map && file.Exists("maps/"..map..".bsp", "GAME") then
