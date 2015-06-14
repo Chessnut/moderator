@@ -262,10 +262,12 @@ local CATEGORY = {}
 			surface.SetDrawColor(0, 0, 0, 60)
 			surface.DrawOutlinedRect(0, 0, w, h)
 			
-			local rank = moderator.GetGroup(self.player)
-			local rankinfo = (moderator.GetGroupTable(rank))
-			surface.SetDrawColor(rankinfo.color)
-			surface.DrawRect(w - 7, 1, 6, h - 2)
+			if (self.playerSet) then
+				local teamColor = team.GetColor(self.player:Team())
+					
+				surface.SetDrawColor(teamColor)
+				surface.DrawRect(w - 7, 1, 6, h - 2)
+			end
 		end
 		
 		function PANEL:SetPlayer(client)
@@ -307,9 +309,7 @@ local CATEGORY = {}
 			end
 			self.avatar.click:SetToolTip("Click to view this "..(client.SteamName and client:SteamName() or client:Name()).."'s Steam profile.")
 			
-			local rank = moderator.GetGroup(self.player)
-			local rankinfo = (moderator.GetGroupTable(rank))
-			self.name:SetText(client:Name() .." ("..rankinfo.name..")")
+			self.name:SetText(client:Name())
 			self.name:SizeToContents()
 
 			self.icon:SetImage("icon16/"..moderator.GetGroupIcon(client)..".png")
