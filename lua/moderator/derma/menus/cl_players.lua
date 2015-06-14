@@ -309,7 +309,9 @@ local CATEGORY = {}
 			end
 			self.avatar.click:SetToolTip("Click to view this "..(client.SteamName and client:SteamName() or client:Name()).."'s Steam profile.")
 			
-			self.name:SetText(client:Name())
+			local rank = moderator.GetGroup(self.player)
+			local rankinfo = (moderator.GetGroupTable(rank))
+			self.name:SetText(client:Name() .." ("..rankinfo.name..")")
 			self.name:SizeToContents()
 
 			self.icon:SetImage("icon16/"..moderator.GetGroupIcon(client)..".png")
