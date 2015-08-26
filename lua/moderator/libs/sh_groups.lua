@@ -171,7 +171,9 @@ else
 				menu.scroll.choose:ChooseOptionID(1)
 			end
 
-			menu.scroll.content.VBar:AnimateTo(0, 0.5, 0, 0.5)
+			if (IsValid(menu.scroll.content)) then
+				menu.scroll.content.VBar:AnimateTo(0, 0.5, 0, 0.5)
+			end
 		end
 	end)
 

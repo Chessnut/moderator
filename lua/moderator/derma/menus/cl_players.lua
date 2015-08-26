@@ -31,7 +31,7 @@ local CATEGORY = {}
 		panel.contents = panel:Add("DPanel")
 		panel.contents:DockMargin(4, 4, 4, 4)
 		panel.contents:Dock(TOP)
-		panel.contents:SetTall(panel:GetTall() - 38)
+		panel.contents:SetTall(panel:GetTall() - 31)
 
 		local function PaintButton(this, w, h)
 			surface.SetDrawColor(255, 255, 255, 80)
@@ -73,6 +73,7 @@ local CATEGORY = {}
 				this.entered = nil
 			end
 			button:SetText(v.name)
+			button:SetTextColor(Color(0, 0, 0, 230))
 			button.DoClick = function()
 				if (table.Count(moderator.selected) > 0) then
 					local target = {}

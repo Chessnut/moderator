@@ -26,12 +26,10 @@ local COMMAND = {}
 		moderator.NotifyAction(client, target, "has placed * in the "..group.." usergroup")
 	end
 
-	function COMMAND:OnClick()
-		local menu = self.menu
-		
+	function COMMAND:OnClick(menu, client)
 		for k, v in SortedPairsByMemberValue(moderator.groups, "immunity") do
 			menu:AddOption(v.name, function()
-				self:Send(k)
+				self:Send(client, k)
 			end):SetImage("icon16/"..(v.icon or "user")..".png")
 		end
 	end
