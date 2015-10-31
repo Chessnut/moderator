@@ -14,16 +14,13 @@ local COMMAND = {}
 
 	function COMMAND:OnRun(client, arguments)
 		local map = arguments[1]
-		local currentmap = game.GetMap()
 		
-		if map && file.Exists("maps/"..map..".bsp", "GAME") && map != currentmap then -- Need to see if the file exists naturally, and we also need to check to see if the current map is the one they're trying to change it to.
+		if map && file.Exists("maps/"..map..".bsp", "GAME") then -- Need to see if the file exists naturally.
 			moderator.NotifyAction(client, nil, "has changed the map to "..map)
 			
 			timer.Simple(0.5, function() -- We do a timer just to add a slight delay.
 				RunConsoleCommand("changelevel", map)
 			end)
-		elseif map == currentmap then
-			client:ChatPrint("You can't change the map to the map we're already on!")
 		else -- If all else fails, the map just doesn't exist.
 			client:ChatPrint("That is not a valid map!")
 		end
