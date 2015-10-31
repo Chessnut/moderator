@@ -14,13 +14,13 @@ local CATEGORY = {}
 		local first = true
 		local UpdateGroupAccess
 
-		local content = panel:Add("DScrollPanel")
-			content:Dock(FILL)
+		local content = panel:Add("DListLayout")
+			content:Dock(TOP)
 			content:SetDrawBackground(true)
-			content:DockMargin(4, 4, 4, 0)
+			content:DockMargin(4, 4, 4, 4)
 		panel.content = content
 
-		panel:AddHeader("Parent", content)
+		local lastY = panel:AddHeader("Parent", content):GetTall() + 4
 
 		local parent = content:Add("DListView")
 			local line = {}

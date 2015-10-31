@@ -42,16 +42,14 @@ local COMMAND = {}
 		}
 		local history = util.JSONToTable(cookie.GetString("mod_BanReasons", "")) or {}
 
-		function COMMAND:OnClick()
-			local menu = self.menu
-
+		function COMMAND:OnClick(menu, client)
 			for i = 1, #timeDefinitions do
 				local time = menu:AddSubMenu(timeDefinitions[i][1])
 				local reasonsMenu = time:AddSubMenu("Reasons")
 
 				for i2 = 1, #reasons do
 					reasonsMenu:AddOption(reasons[i2], function()
-						self:Send(timeDefinitions[i][2], reasons[i2])
+						self:Send(client, timeDefinitions[i][2], reasons[i2])
 					end)
 				end
 
@@ -59,13 +57,13 @@ local COMMAND = {}
 
 				for i2 = 1, #history do
 					historyMenu:AddOption(history[i2], function()
-						self:Send(timeDefinitions[i][2], history[i2])
+						self:Send(client, timeDefinitions[i][2], history[i2])
 					end)
 				end
 
 				time:AddOption("Specify", function()
 					Derma_StringRequest("Specify Reason", "Specify a reason in the box below.", "", function(text)
-						self:Send(timeDefinitions[i][2], text)
+						self:Send(client, timeDefinitions[i][2], text)
 
 						table.insert(history, text)
 						cookie.Set("mod_BanReasons", util.TableToJSON(history))
@@ -76,7 +74,7 @@ local COMMAND = {}
 			menu:AddOption("Specify", function()
 				Derma_StringRequest("Specify Time", "Specify a ban time in the box below.", "", function(time)
 					Derma_StringRequest("Specify Reason", "Specify a ban reason in the box below.", "", function(text)
-						self:Send(time, text)
+						self:Send(client, time, text)
 
 						table.insert(history, text)
 						cookie.Set("mod_BanReasons", util.TableToJSON(history))

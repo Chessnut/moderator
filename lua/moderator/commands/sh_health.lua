@@ -30,18 +30,16 @@ local COMMAND = {}
 		moderator.NotifyAction(client, target, "has set the "..name2.." of * to "..amount)
 	end
 
-	function COMMAND:OnClick()
-		local menu = self.menu
-		
+	function COMMAND:OnClick(menu, client)
 		for i = 1, 10 do
 			menu:AddOption((i * 10).." "..name, function()
-				self:Send(i * 10)
+				self:Send(client, i * 10)
 			end)
 		end
 
 		menu:AddOption("Specify", function()
 			Derma_StringRequest("Set "..name, "Specify the amount of "..name2.." to set.", 100, function(text)
-				self:Send(tonumber(text) or 100)
+				self:Send(client, tonumber(text) or 100)
 			end)
 		end)
 	end

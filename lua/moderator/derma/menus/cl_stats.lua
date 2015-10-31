@@ -11,6 +11,8 @@ local CATEGORY = {}
 	end
 
 	function CATEGORY:Layout(panel)
+		panel:Dock(FILL)
+		
 		local graph = panel:Add("mod_Graph")
 		graph:SetTall(250)
 		graph:Dock(TOP)

@@ -108,7 +108,7 @@ local PANEL = {}
 		self.scroll:SetPos(0, 48)
 		self.scroll.realWidth = w - (w * sideWidthFraction) - 1
 		self.scroll.realHeight = h - 43
-		self.scroll:SetSize(self.scroll.realWidth, h - 43)
+		self.scroll:SetSize(self.scroll.realWidth, h - 50)
 		self.scroll.AddHeader = function(this, text, parent, update)
 			local label = (IsValid(parent) and parent or self.scroll):Add("DLabel")
 			label:SetText(text or "Label")
@@ -126,18 +126,21 @@ local PANEL = {}
 					end
 				end
 			end
+
+			return label
 		end
 		self.scroll.ShowMessage = function(this, text)
 			surface.SetFont("mod_SubTitleFont")
 			local w, h = surface.GetTextSize(text)
 
 			local message = this:Add("DLabel")
-			message:SetDark(true)
+			message:InvalidateParent(true)
+			message:SetTall(this:GetTall())
+			message:Dock(FILL)
+			message:SetTextColor(Color(0, 0, 0, 150))
 			message:SetText(text)
 			message:SetFont("mod_SubTitleFont")
-			message:SizeToContents()
-			message:SetPos(this:GetWide() / 2 - w/2, this:GetTall() / 2 - h/2)
-			message:SetAlpha(150)
+			message:SetContentAlignment(5)
 		end
 
 		self.headerTitle = "None"
@@ -234,6 +237,7 @@ local PANEL = {}
 				this:SetTextColor(Color(20, 20, 20))
 
 				self.scroll:Clear()
+				self.scroll:InvalidateLayout()
 				self.scroll:DockPadding(0, 0, 0, 0)
 				self.scroll:DockMargin(0, 0, 0, 0)
 
@@ -245,6 +249,8 @@ local PANEL = {}
 					if (allowKeyboard) then
 						self:SetKeyBoardInputEnabled(true)
 					end
+
+					self.scroll:InvalidateParent()
 				end
 
 				self.headerTitle = v.name

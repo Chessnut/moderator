@@ -43,14 +43,12 @@ local COMMAND = {}
 		moderator.NotifyAction(client, target, "teleported * to their "..(toAim and "aim position" or "position"))
 	end
 
-	function COMMAND:OnClick()
-		local menu = self.menu
-		
+	function COMMAND:OnClick(menu, client)
 		menu:AddOption("To Me", function()
-			self:Send()
+			self:Send(client)
 		end)
 		menu:AddOption("To Aim", function()
-			self:Send(true)
+			self:Send(client, true)
 		end)
 	end
 moderator.commands.tp = COMMAND

@@ -35,15 +35,14 @@ local COMMAND = {}
 		}
 		local history = util.JSONToTable(cookie.GetString("mod_KickReasons", "")) or {}
 
-		function COMMAND:OnClick()
-			local menu = self.menu
+		function COMMAND:OnClick(menu, client)
 			local menu2 = menu:AddSubMenu("Reasons")
 
 			for i = 1, #reasons do
 				local reason = reasons[i]
 
 				menu2:AddOption(reason, function()
-					self:Send(reason:lower())
+					self:Send(client, reason:lower())
 				end)
 			end
 
@@ -53,16 +52,16 @@ local COMMAND = {}
 				local reason = history[i]
 
 				menu2:AddOption(reason, function()
-					self:Send(reason:lower())
+					self:Send(client, reason:lower())
 				end)
 			end
 
 			menu:AddOption("No reason", function()
-				self:Send()
+				self:Send(client)
 			end)
 			menu:AddOption("Specify", function()
 				Derma_StringRequest("Specify Reason", "Specify a reason in the box below.", "", function(text)
-					self:Send(text)
+					self:Send(client, text)
 
 					table.insert(history, text)
 					cookie.Set("mod_KickReasons", util.TableToJSON(history))

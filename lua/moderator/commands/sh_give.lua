@@ -48,8 +48,7 @@ local COMMAND = {}
 		moderator.NotifyAction(client, target, "has given a(n) "..class.." to *")
 	end
 
-	function COMMAND:OnClick()
-		local menu = self.menu
+	function COMMAND:OnClick(menu, client)
 		local categories = {}
 
 		for k, v in SortedPairs(weapons.GetList() or {}) do
@@ -68,12 +67,12 @@ local COMMAND = {}
 
 		for k, v in SortedPairs(hl2Weapons) do
 			category:AddOption(v, function()
-				self:Send(k)
+				self:Send(client, k)
 			end)
 		end
 
 		menu:AddSubMenu("Garry's Mod"):AddOption("Physics Gun", function()
-			self:Send("weapon_physgun")
+			self:Send(client, "weapon_physgun")
 		end)
 	end
 moderator.commands.give = COMMAND
