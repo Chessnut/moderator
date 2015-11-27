@@ -90,6 +90,16 @@ local CATEGORY = {}
 			name:SetTall(24)
 			name:DockMargin(4, 0, 4, 4)
 		panel.name = name
+		
+		panel:AddHeader("Colour", content)
+		
+		local colour = content:Add("DColorMixer")
+			colour:Dock(TOP)
+			colour:SetTall(186)
+			colour:DockMargin(4, 0, 4, 4)
+			colour:SetPalette(false)
+			colour:SetAlphaBar(false)
+		panel.colour = colour
 
 		panel:AddHeader("Icon", content)
 
@@ -166,6 +176,13 @@ local CATEGORY = {}
 				choose.Choices[panel.choices[data]] = value
 				choose:SetValue(value)
 				lastName = value
+			end
+			
+			print(groupTable.colour)
+			colour:SetColor(groupTable.colour or Color(255, 255, 255))
+			
+			colour.ValueChanged = function(this)
+				moderator.UpdateGroup(data, "colour", colour:GetColor())
 			end
 
 			icons:SelectIcon("icon16/"..(groupTable.icon or "user")..".png")
