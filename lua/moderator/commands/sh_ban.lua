@@ -9,8 +9,6 @@ local COMMAND = {}
 	COMMAND.example = "!ban Troll 1w \"being a troll, banned for a week\" - Bans a troll for one week."
 
 	function COMMAND:OnRun(client, arguments, target)
-		local target = moderator.FindPlayerByName(arguments[1], false, 1)
-
 		if (!target and !arguments[1]:match("STEAM_[0-5]:[0-9]:[0-9]+") and arguments[1]:lower() != "bot") then
 			return false, "you need to provide a valid player or steamID."
 		end
