@@ -92,7 +92,7 @@ local CATEGORY = {}
 								Send(...)
 							end
 
-							v:OnClick()
+							v:OnClick(v.menu, LocalPlayer())
 						v.menu:Open()
 						v.menu = nil
 					else
