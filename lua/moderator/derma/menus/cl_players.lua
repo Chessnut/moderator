@@ -92,7 +92,7 @@ local CATEGORY = {}
 								Send(...)
 							end
 
-							v:OnClick()
+							v:OnClick(v.menu, LocalPlayer())
 						v.menu:Open()
 						v.menu = nil
 					else
@@ -264,9 +264,9 @@ local CATEGORY = {}
 			surface.DrawOutlinedRect(0, 0, w, h)
 			
 			if (self.playerSet) then
-				local teamColor = team.GetColor(self.player:Team())
+				local rankcolour = moderator.GetGroupTable(moderator.GetGroup(self.player)).colour
 					
-				surface.SetDrawColor(teamColor)
+				surface.SetDrawColor(rankcolour)
 				surface.DrawRect(w - 7, 1, 6, h - 2)
 			end
 		end

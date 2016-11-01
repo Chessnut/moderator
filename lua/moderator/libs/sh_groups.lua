@@ -4,16 +4,18 @@ if (!moderator.groups) then
 	moderator.groups = {}
 
 	moderator.groups.owner = {
-		immunity = 99,
 		name = "Owner",
+		icon = "key",
+		colour = Color(41, 128, 185),
 		access = true,
-		icon = "key"
+		immunity = 99
 	}
 
 	moderator.groups.superadmin = {
 		name = "Super Admin",
 		inherit = "admin",
 		icon = "shield",
+		colour = Color(115, 30, 171),
 		immunity = 15
 	}
 
@@ -21,6 +23,7 @@ if (!moderator.groups) then
 		name = "Admin",
 		inherit = "moderator",
 		icon = "star",
+		colour = Color(149, 15, 15),
 		access = {
 			["arm"] = true,
 			["armor"] = true,
@@ -38,7 +41,9 @@ if (!moderator.groups) then
 
 	moderator.groups.moderator = {
 		name = "Moderator",
+		inherit = "user",
 		icon = "wrench",
+		colour = Color(216, 128, 26),
 		access = {
 			["goto"] = true,
 			["tp"] = true,
@@ -47,13 +52,13 @@ if (!moderator.groups) then
 			["freeze"] = true,
 			["return"] = true
 		},
-		inherit = "user",
 		immunity = 5
 	}
 
 	moderator.groups.user = {
 		name = "User",
 		immunity = 0,
+		colour = Color(166, 166, 166),
 		access = {
 			["report"] = true
 		}
@@ -70,7 +75,8 @@ moderator.defaultGroups["user"] = true
 moderator.templateGroup = {
 	name = "New Group",
 	immunity = 0,
-	icon = "user"
+	icon = "user",
+	colour = Color(255, 255, 255)
 }
 
 if (SERVER) then

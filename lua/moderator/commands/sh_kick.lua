@@ -9,7 +9,11 @@ local COMMAND = {}
 		local reason = "no reason"
 
 		if (#arguments > 0) then
-			reason = table.concat(arguments, " ")
+			if (isstring(arguments[1])) then
+				reason = table.concat(arguments, " ")
+			else
+				reason = arguments[2]
+			end
 		end
 
 		local oldReason = reason
